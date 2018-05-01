@@ -45,6 +45,11 @@
 > - 并发分发Request
 > - 控制力弱, 分发出去的goroutine,就收不回来了；并且所有Worker都在抢同一个channel的东西，也没办法控制
 > - 限制了负载均衡
-> - 调度器使用worker channel来存储请求，开启多个worker groutine去获取请求，在分发任务的engine中等待结果
 <img src = "https://on-img.com/chart_image/5ab717c9e4b0a248b0e1bff4.png" alt="并发调度器">
 
+#### Scheduler实现III
+
+> **队列并发调度器**
+> - 使用request队列来保存请求，worker队列来保存worker相应的request的操作
+> - 使用调度器来实现request队列分发给worker队列
+<img src = "https://github.com/dcg123/carwler/blob/master/src/AdConcurrentCarwler/ad.png" alt="队列并发调度器">
