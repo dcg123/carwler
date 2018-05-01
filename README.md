@@ -12,8 +12,8 @@
 
 <img src = "http://orj2jcr7i.bkt.clouddn.com/%E5%8D%95%E4%BB%BB%E5%8A%A1%E7%89%88%E7%88%AC%E8%99%AB%E6%9E%B6%E6%9E%84.png" alt="单任务版爬虫架构">
 
-> -输入请求，通过Engine去解析每个请求，并分发每个请求。
-> -对于一个总请求，通过正则解析出每个城市和每个城市的url,在城市列表解析其中加入城市解析函数，最后加入请求队列中
+> - 输入请求，通过Engine去解析每个请求，并分发每个请求。
+> - 对于一个总请求，通过正则解析出每个城市和每个城市的url,在城市列表解析其中加入城市解析函数，最后加入请求队列中
 
 
 ### 爬虫总体算法
@@ -45,17 +45,6 @@
 > - 并发分发Request
 > - 控制力弱, 分发出去的goroutine,就收不回来了；并且所有Worker都在抢同一个channel的东西，也没办法控制
 > - 限制了负载均衡
-
+> - 调度器使用worker channel来存储请求，开启多个worker groutine去获取请求，在分发任务的engine中等待结果
 <img src = "https://on-img.com/chart_image/5ab717c9e4b0a248b0e1bff4.png" alt="并发调度器">
 
-
-```go
-\\实现关键语句 
-
-func (s *SimpleScheduler) Submit(r engine.Request) {
-	go func() {
-		s.workerChan <- r
-	}()
-
-}
-```
